@@ -5,3 +5,6 @@ Manually install Dependencies: "pip install -r requirements.txt" or view depende
 Pinecone searches for the best-matching legal text.
 1: If Pinecone finds something, GPT-4o uses it to generate an answer.
 2: If Pinecone finds nothing, it falls back to JSON-based retrieval.
+
+Use FASTapi to test endpoints:
+uvicorn main:app --reload
