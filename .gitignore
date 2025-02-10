@@ -1,0 +1,46 @@
+# Byte-compiled / cache files
+__pycache__/
+*.py[cod]
+*.so
+
+# Virtual environments
+venv/
+env/
+*.venv
+Pipfile.lock
+
+# System files (Mac, Windows, Linux)
+.DS_Store
+Thumbs.db
+
+# Logs and debug files
+*.log
+logs/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Python package dependencies
+*.egg-info/
+dist/
+build/
+
+# Large datasets, models, and outputs
+*.csv
+*.json
+*.sqlite
+*.db
+*.h5
+*.pkl
+*.model
+*.pt
+*.tar.gz
+*.zip
+
+# IDE-specific settings
+.vscode/
+.idea/
+*.iml
+
+# Ignore environment variable files
+.env
