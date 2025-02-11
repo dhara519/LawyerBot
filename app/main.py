@@ -4,6 +4,7 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from dotenv import load_dotenv
 from transformers import pipeline
+import json
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from sentence_transformers import SentenceTransformer
 from pineconeDB import index
@@ -22,10 +23,43 @@ class DocumentInput(BaseModel):
 class QuestionInput(BaseModel):
     question: str
 
+# Load JSON file
+def load_json(file):
+    with open(file_path, "r", encoding="utf-8") as file:
+        data = json.load(file)
+    return data
+
+# Define file path temporarily here while I build the rest of the code
+file_path = "public\combinedData.json"  # Combined Json on team drive
+legal_data = load_json(file_path)
+
+
+
+
+
 # Extract text (Does Nothing)
-def extract_text(doc_text):
+def extract_text(data, parent_key=""):
     """ Extract text from a document """
-    return doc_text  # Replace later
+    text = []
+
+    if isinstance(data, dict):
+        for key, value in data.items():
+            new_key = f"{parent_key}.{key}" if parent_key else key
+            text.extend(extract_text(value, new_key))
+# Left off here. Need Dynamic Key Extraction to extract text from legal_data if its a list/str/dict. Recursive was cool  
+# def chunking is fine. 
+# def pc storage needs to be better for duplicates 
+# everything needs to be async. 
+
+
+    return text  # Replace later
+
+
+
+
+
+
+
 
 # Chunk text
 def chunk_text(text):

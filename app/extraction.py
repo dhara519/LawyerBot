@@ -7,7 +7,7 @@ def load_json(file_path):
     return data
 
 # Load legal data
-file_path = "/content/ma_parking_master_part1.json"  # Change path if needed
+file_path = "/public/combinedData.json"  # Combined Json on team drive
 legal_data = load_json(file_path)
 
 # Extract key sections
