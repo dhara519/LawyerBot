@@ -4,9 +4,9 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from dotenv import load_dotenv
 from transformers import pipeline
-from langchain.text_splitter import RecursiveCharacterTextSplitter
 from sentence_transformers import SentenceTransformer
 from pineconeDB import index
+from extraction import extract_text, chunk_text, store_in_pinecone
 
 # Load environment variables, Initialize OpenAI and FastAPI app
 load_dotenv()
@@ -22,39 +22,20 @@ class DocumentInput(BaseModel):
 class QuestionInput(BaseModel):
     question: str
 
-# Extract text (Does Nothing)
-def extract_text(doc_text):
-    """ Extract text from a document """
-    return doc_text  # Replace later
-
-# Chunk text
-def chunk_text(text):
-    """ Splits extracted text into smaller overlapping chunks """
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size=512, chunk_overlap=100)
-    return text_splitter.split_text(text)
-
-# Store embeddings in Pinecone
-def store_in_pinecone(chunks):
-    """ Converts text chunks into embeddings and stores them in Pinecone """
-
-    for i, chunk in enumerate(chunks):
-        embedding = embedding_model.encode(chunk).tolist()
-        index.upsert(vectors=[{"id": f"chunk-{i}", "values": embedding, "metadata": {"text": chunk}}])
-
-    return {"message": f"Stored {len(chunks)} chunks in Pinecone."}
-
-# API to process and store documents
+# API to process and store documents uploaded by the user
 @app.post("/process-document")
 def process_document(document: DocumentInput):
     """ Extracts text, chunks it, and stores embeddings in Pinecone """
     try:
+        print(f"process_doc({document.text})")
         extracted_text = extract_text(document.text)
         chunks = chunk_text(extracted_text)
         response = store_in_pinecone(chunks)
         return response
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
+    
+# Process for user qeuries
 # Retrieve relevant chunks
 def retrieve_relevant_chunks(question, top_k=3):
     """ Searches Pinecone for the most relevant text chunks """
