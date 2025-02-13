@@ -1,3 +1,4 @@
+# File Purpose: Initalize and export pinecone index 
 import os
 from dotenv import load_dotenv
 from pinecone import Pinecone,ServerlessSpec
@@ -12,7 +13,7 @@ if not index_name:
     raise ValueError("PINECONE_INDEX environment variable is invalid.")
 
 # Test: Ensure the index exists in pc before initializing index connection
-existing_indexes = [index["name"] for index in pc.list_indexes().get("indexes", [])]
+existing_indexes = [index["name"] for index in pc.list_indexes().get("indexes", [])] #If the key "name" exists in the dict (index), the value associated with it will be returned.
 if index_name not in existing_indexes:
     print(f"Existing indexes in Pinecone: {pc.list_indexes()}")
     pc.create_index(
@@ -24,8 +25,8 @@ if index_name not in existing_indexes:
             region= "us-east-1")
     )
 else:
-    # Initialize Pinecone Index Connection using index's host URL
+    # Initialize Pinecone Index Connection using index's host URL not the index name
     index_details = pc.describe_index(index_name)
     index = pc.Index(host= index_details.host)
     
-__all__ = ["pc", "index", "index_name", "index_details"]
+__all__ = ["pc", "index"]
