@@ -13,10 +13,10 @@ pip install -r requirements.txt
 Add environment variables
 Create a .env file at the project root:
 OpenAI
-OPENAI_API_KEY=sk-...
+OPENAI_API_KEY=
 
 Pinecone
-PINECONE_API_KEY=pc-...
+PINECONE_API_KEY=
 PINECONE_INDEX=lawyerbot-index   
 
 Path to your combined legal JSON knowledge base
